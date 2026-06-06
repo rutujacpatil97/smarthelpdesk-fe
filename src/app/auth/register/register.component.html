@@ -1,0 +1,66 @@
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+
+  <h2>Register in SmartHelpDesk</h2>
+
+  <!-- Name -->
+  <input
+    type="text"
+    formControlName="name"
+    placeholder="Name">
+
+  <div
+    class="error"
+    *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+
+    <small *ngIf="registerForm.get('name')?.errors?.['required']">
+      Name is required
+    </small>
+  </div>
+
+  <!-- Email -->
+  <input
+    type="email"
+    formControlName="email"
+    placeholder="Email">
+
+  <div
+    class="error"
+    *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+
+    <small *ngIf="registerForm.get('email')?.errors?.['required']">
+      Email is required
+    </small>
+
+    <small *ngIf="registerForm.get('email')?.errors?.['email']">
+      Please enter a valid email address
+    </small>
+  </div>
+
+  <!-- Password -->
+  <input
+    type="password"
+    formControlName="password"
+    placeholder="Password">
+
+  <div
+    class="error"
+    *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+
+    <small *ngIf="registerForm.get('password')?.errors?.['required']">
+      Password is required
+    </small>
+  </div>
+
+  <button
+    type="submit"
+    class="btn-primary"
+    [disabled]="registerForm.invalid">
+    Register
+  </button>
+
+  <p>
+    Already have an account?
+    <a class="link" (click)="goToLogin()">Login</a>
+  </p>
+
+</form>

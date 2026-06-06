@@ -1,0 +1,24 @@
+<div class="sidebar">
+
+  <div class="menu">
+
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="menu-item">
+
+      <span class="material-icons">
+        {{ item.icon }}
+      </span>
+
+      <span>
+        {{ item.label }}
+      </span>
+
+    </a>
+
+  </div>
+
+</div>

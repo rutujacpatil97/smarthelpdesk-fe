@@ -1,0 +1,38 @@
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <h2>Login to SmartHelpDesk</h2>
+
+    <!-- Email -->
+    <input type="email" formControlName="email" placeholder="Email">
+
+    <div class="error" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+
+        <small *ngIf="loginForm.get('email')?.errors?.['required']">
+            Email is required
+        </small>
+
+        <small *ngIf="loginForm.get('email')?.errors?.['email']">
+            Please enter a valid email address
+        </small>
+    </div>
+
+    <!-- Password -->
+    <input type="password" formControlName="password" placeholder="Password">
+
+    <div class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+
+        <small *ngIf="loginForm.get('password')?.errors?.['required']">
+            Password is required
+        </small>
+    </div>
+
+    <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">
+        Login
+    </button>
+
+    <p>
+        Don't have an account?
+        <a class="link" (click)="goToRegister()">Register</a>
+    </p>
+
+</form>

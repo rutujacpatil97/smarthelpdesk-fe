@@ -1,0 +1,12 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 280px;
+  background: #f5f7fb;
+  min-height: 100vh;
+  width: calc(100% - 260px); 
+}

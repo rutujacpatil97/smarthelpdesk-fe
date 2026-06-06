@@ -1,0 +1,74 @@
+<div class="toolbar">
+    <h2 class="page-title">{{ pageTitle }}</h2>
+    <div class="toolbar-actions">
+        <div class="filter-group">
+            <div class="filter-item">
+                <label>Search</label>
+                <input class="search-box" type="text" placeholder="Search" (keyup)="search($event)">
+            </div>
+            <div class="filter-item">
+                <label>Status</label>
+                <select class="filter-select" (change)="statusChanged($event)">
+                    <option value="">All</option>
+                    <option value="OPEN">Open</option>
+                    <option value="ASSIGNED">Assigned</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="RESOLVED">Resolved</option>
+                    <option value="REOPENED">Reopened</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label>Priority</label>
+                <select class="filter-select" (change)="priorityChanged($event)">
+                    <option value="">All</option>
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="HIGH">Critical</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket No</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ticket of tickets">
+                <td>{{ticket.ticketNumber}}</td>
+                <td>{{ticket.title}}</td>
+                <td>
+                    <span [ngClass]="{
+            'badge-open': ticket.status === 'OPEN',
+            'badge-assigned': ticket.status === 'ASSIGNED',
+            'badge-in-progress': ticket.status === 'IN_PROGRESS',
+            'badge-resolved': ticket.status === 'RESOLVED',
+            'badge-reopened': ticket.status === 'REOPENED'
+          }" class="badge">{{ticket.status}}</span>
+                </td>
+                <td>{{ticket.priority}}</td>
+                <td>
+                    <button class="view-btn" (click)="viewTicket(ticket._id)">
+                        View
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination">
+    <button class="page-btn" (click)="previousPage()">← Previous</button>
+    <span class="page-info">Page {{page}}</span>
+    <button class="page-btn" (click)="nextPage()">Next →</button>
+</div>

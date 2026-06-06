@@ -1,0 +1,176 @@
+<div class="ticket-card">
+  <div class="ticket-header">
+    <div class="ticket-meta">
+      <span class="ticket-id">#{{ ticket?.ticketNumber }}</span>
+      <h2 class="ticket-title">{{ ticket?.title }}</h2>
+    </div>
+    <div class="ticket-badges">
+      <span class="badge" [ngClass]="
+          'badge-status-' + ticket?.status?.toLowerCase()?.replace(' ', '-')
+        ">
+        <span class="dot"></span>{{ ticket?.status }}
+      </span>
+      <span class="badge" [ngClass]="'badge-priority-' + ticket?.priority?.toLowerCase()">
+        <span class="dot"></span>{{ ticket?.priority }}
+      </span>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="ticket-description">
+    <p class="field-label">Description</p>
+    <p class="field-value">{{ ticket?.description }}</p>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-item" *ngIf="ticket?.assignedTo">
+      <p class="field-label">Assigned to</p>
+
+      <div class="assignee">
+        <span class="avatar">
+          {{ ticket?.assignedTo?.name | initials }}
+        </span>
+
+        <span class="field-value">
+          {{ ticket?.assignedTo?.name }}
+        </span>
+      </div>
+    </div>
+    <div class="meta-item" *ngIf="ticket?.createdAt">
+      <p class="field-label">Created</p>
+      <p class="field-value">{{ ticket?.createdAt | date: "MMM d, y" }}</p>
+    </div>
+    <div class="meta-item" *ngIf="ticket?.updatedAt">
+      <p class="field-label">Updated</p>
+      <p class="field-value">{{ ticket?.updatedAt | date: "MMM d, y" }}</p>
+    </div>
+    <div class="meta-item" *ngIf="ticket?.createdBy">
+      <p class="field-label">Created By</p>
+      <div class="assignee">
+        <span class="avatar">
+          {{ ticket?.createdBy?.name | initials }}
+        </span>
+        <span class="field-value">
+          {{ ticket?.createdBy?.name }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="assignment-section" *ngIf="currentUser?.role === 'ADMIN'">
+  <h3>Assignment</h3>
+
+  <div class="assignment-row">
+    <div class="current-assignee">
+      <p class="field-label">Current Assignee</p>
+
+      <p class="field-value">
+        {{ ticket?.assignedTo?.name || "Unassigned" }}
+      </p>
+    </div>
+
+    <div class="assign-form">
+      <select [(ngModel)]="selectedEngineer">
+        <option value="">Select Engineer</option>
+
+        <option *ngFor="let engineer of engineers" [value]="engineer._id">
+          {{ engineer.name }}
+        </option>
+      </select>
+
+      <button class="assign-btn" (click)="assignTicket()">
+        {{ ticket?.assignedTo ? "Reassign" : "Assign" }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="currentUser?.role === 'ENGINEER' && ticket?.status !== 'RESOLVED'">
+  <button class="assign-btn" (click)="assignToMe()">Assign To Me</button>
+</div>
+
+<div class="status-section"
+  *ngIf="(currentUser?.role === 'ENGINEER') && ticket?.status !== 'RESOLVED' && ticket?.assignedTo?._id == currentUser.id">
+  <h3>Update Status</h3>
+
+  <select [(ngModel)]="selectedStatus">
+    <option value="">Select Status</option>
+
+    <option value="IN_PROGRESS">In Progress</option>
+
+    <option value="RESOLVED">Resolved</option>
+  </select>
+
+  <textarea rows="4" [(ngModel)]="statusComment" placeholder="Enter comment">
+  </textarea>
+
+  <button (click)="updateStatus()">Save</button>
+</div>
+
+<div
+  class="comment-section"
+  *ngIf="
+    currentUser?.role === 'EMPLOYEE' &&
+    ticket?.createdBy?._id === currentUser?.id
+  "
+>
+
+  <h3>
+    {{ ticket?.status === 'RESOLVED'
+        ? 'Add Comment / Reopen Ticket'
+        : 'Add Comment' }}
+  </h3>
+
+  <textarea
+    rows="4"
+    [(ngModel)]="newComment"
+    placeholder="Add additional information">
+  </textarea>
+
+  <div class="action-buttons">
+
+    <button
+      class="comment-btn"
+      (click)="addComment()">
+      Add Comment
+    </button>
+
+    <button
+      *ngIf="ticket?.status === 'RESOLVED'"
+      class="reopen-btn"
+      (click)="reopenTicket()">
+      Reopen Ticket
+    </button>
+
+  </div>
+
+</div>
+
+<div class="comments-section">
+  <h3>Comments History</h3>
+
+   <div class="no-comments" *ngIf="!ticket?.comments?.length">
+    No comments yet
+  </div>
+
+
+  <div class="comment-card" *ngFor="let comment of ticket?.comments">
+    <div class="comment-header">
+      <strong>
+        {{ comment?.commentedBy?.name }}
+      </strong>
+
+      <span>
+        {{ comment?.createdAt | date: "dd MMM yyyy hh:mm a" }}
+      </span>
+    </div>
+
+    <span *ngIf="comment?.status" class="status-badge" [ngClass]="'badge-status-' + comment.status.toLowerCase()">
+      {{ comment.status }}
+    </span>
+    <p>
+      {{ comment.comment }}
+    </p>
+  </div>
+</div>

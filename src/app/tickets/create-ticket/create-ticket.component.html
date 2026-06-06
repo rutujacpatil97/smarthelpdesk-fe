@@ -1,0 +1,36 @@
+<div class="ticket-form">
+  <h2 class="page-title">Create Ticket</h2>
+
+  <form [formGroup]="ticketForm" (ngSubmit)="createTicket()">
+    <div class="form-row">
+      <label class="form-label">Title</label>
+      <input class="form-control" formControlName="title" placeholder="Enter Ticket Title">
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" formControlName="description" placeholder="Describe the issue"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Category</label>
+      <select class="form-control" formControlName="category">
+        <option value="">Select category</option>
+        <option value="Hardware">Hardware</option>
+        <option value="Software">Software</option>
+        <option value="Network">Network</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label class="form-label">Priority</label>
+      <select class="form-control" formControlName="priority">
+        <option value="LOW">Low</option>
+        <option value="MEDIUM">Medium</option>
+        <option value="HIGH">High</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn-primary">Create Ticket</button>
+  </form>
+</div>

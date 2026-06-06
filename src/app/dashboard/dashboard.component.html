@@ -1,0 +1,91 @@
+<div class="dashboard">
+  <div class="welcome-section">
+    <div class="welcome-text">
+      <h1>Welcome Back 👋</h1>
+
+      <p>Here's what's happening with your tickets today.</p>
+    </div>
+
+    <div class="current-date">
+      {{ currentDate | date: "dd MMM yyyy" }}
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+
+      <div class="stat-label">
+        Total Tickets
+      </div>
+
+      <div class="stat-value">
+        {{ totalTickets }}
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Open Tickets</div>
+
+      <div class="stat-value">{{ openTickets }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">In Progress</div>
+
+      <div class="stat-value">{{ inProgressTickets }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Resolved</div>
+
+      <div class="stat-value">{{ resolvedTickets }}</div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="recent-tickets">
+      <h2 class="section-title">Recent Tickets</h2>
+
+      <!-- empty state -->
+      <div *ngIf="recentTickets?.length === 0">No recent tickets found</div>
+
+      <!-- dynamic tickets -->
+      <div class="ticket-item" *ngFor="let ticket of recentTickets">
+        <div>
+          <div class="ticket-title">
+            {{ ticket.title }}
+          </div>
+
+          <div class="ticket-subtitle">
+            Ticket #{{ ticket.ticketId || ticket._id }}
+          </div>
+        </div>
+
+        <span class="badge" [ngClass]="{
+            'badge-open': ticket.status === 'OPEN',
+            'badge-assigned': ticket.status === 'ASSIGNED',
+            'badge-in-progress': ticket.status === 'IN_PROGRESS',
+            'badge-resolved': ticket.status === 'RESOLVED',
+            'badge-reopened': ticket.status === 'REOPNED',
+          }">
+          {{ ticket.status }}
+        </span>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <h2 class="section-title">Quick Actions</h2>
+
+      <button class="action-btn primary" routerLink="/tickets/create">
+        + Create New Ticket
+      </button>
+
+      <button class="action-btn" routerLink="/tickets">View My Tickets</button>
+
+      <button class="action-btn">Download Report</button>
+
+      <button class="action-btn">Contact Support: 1800 1200 1234</button>
+    </div>
+  </div>
+</div>
